@@ -1,0 +1,35 @@
+{
+  "ci": {
+    "collect": {
+      "url": [
+        "http://127.0.0.1:8000/",
+        "http://127.0.0.1:8000/profil",
+        "http://127.0.0.1:8000/layanan",
+        "http://127.0.0.1:8000/aplikasi-publik",
+        "http://127.0.0.1:8000/statistik",
+        "http://127.0.0.1:8000/informasi",
+        "http://127.0.0.1:8000/kontak"
+      ],
+      "numberOfRuns": 1,
+      "settings": {
+        "preset": "desktop",
+        "throttlingMethod": "simulate",
+        "skipAudits": ["uses-http2", "canonical"]
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance":      ["warn",  { "minScore": 0.90 }],
+        "categories:accessibility":    ["error", { "minScore": 0.90 }],
+        "categories:best-practices":   ["warn",  { "minScore": 0.90 }],
+        "categories:seo":              ["error", { "minScore": 0.90 }],
+        "uses-rel-preconnect":         "off",
+        "csp-xss":                     "off"
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": "./storage/lighthouse"
+    }
+  }
+}

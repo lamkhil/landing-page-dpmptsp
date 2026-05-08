@@ -1,0 +1,68 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+@source '../../app/View/Components/**/*.php';
+
+@theme {
+    /* Government enterprise palette — base navy #0E4DA4 */
+    --color-primary-50:  #eff6ff;
+    --color-primary-100: #dbeafe;
+    --color-primary-200: #bfdbfe;
+    --color-primary-300: #93c5fd;
+    --color-primary-400: #60a5fa;
+    --color-primary-500: #2563eb;
+    --color-primary-600: #1d4ed8;
+    --color-primary-700: #0E4DA4;
+    --color-primary-800: #0b3c80;
+    --color-primary-900: #082c5e;
+    --color-primary-950: #051a39;
+
+    --color-accent-400: #22d3ee;
+    --color-accent-500: #06b6d4;
+    --color-accent-600: #0891b2;
+
+    --color-surface: #f8fafc;
+    --color-ink:     #0f172a;
+    --color-muted:   #64748b;
+
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Plus Jakarta Sans', 'Inter', ui-sans-serif, sans-serif;
+
+    --radius-card: 1rem;     /* rounded-xl */
+    --radius-pill: 9999px;
+
+    --shadow-soft: 0 6px 24px -8px rgb(15 23 42 / 0.08);
+    --shadow-card: 0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px -12px rgb(15 23 42 / 0.10);
+}
+
+@layer base {
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { @apply font-sans bg-surface text-ink antialiased; }
+    /*
+     * Headings inherit color from parent — section yang gelap pakai text-white,
+     * section terang inherit text-ink dari body. Hindari `text-ink` baseline di
+     * sini karena element selector h1/h2 menang vs inheritance dan bikin tulisan
+     * jadi hitam di atas bg gelap.
+     */
+    h1, h2, h3, h4, h5, h6 { @apply font-display tracking-tight; color: inherit; }
+    a { @apply transition-colors; }
+    :focus-visible { @apply outline-2 outline-offset-2 outline-primary-700 rounded; }
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    }
+}
+
+@layer components {
+    .container-page { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
+    .card { @apply bg-white rounded-2xl shadow-sm border border-slate-100; }
+    .card-padded { @apply bg-white rounded-2xl shadow-sm border border-slate-100 p-6; }
+    .btn-primary { @apply inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold bg-primary-700 text-white hover:bg-primary-800 transition shadow-sm; }
+    .btn-outline { @apply inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold border border-primary-700 text-primary-700 hover:bg-primary-50 transition; }
+    .btn-ghost   { @apply inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-primary-700 hover:bg-primary-50 transition; }
+    .chip { @apply inline-flex items-center gap-1 rounded-full bg-primary-50 text-primary-700 text-xs font-medium px-2.5 py-1; }
+    .heading-eyebrow { @apply text-xs font-semibold tracking-widest uppercase text-primary-700; }
+    .skip-link { @apply sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:bg-primary-700 focus:text-white focus:px-3 focus:py-2 focus:rounded; }
+}
