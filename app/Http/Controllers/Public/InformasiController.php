@@ -155,6 +155,7 @@ class InformasiController extends Controller
             'post'      => $post,
             'section'   => $section,
             'listRoute' => $listRoute,
+            'showRoute' => $showRoute,
             'related'   => Post::query()->ofType($type)->published()->whereKeyNot($post->id)->latest('published_at')->limit(4)->get(),
         ]);
     }

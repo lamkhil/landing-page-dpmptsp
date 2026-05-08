@@ -39,7 +39,7 @@
                         <ul class="mt-3 space-y-3 text-sm">
                             @foreach ($related as $r)
                                 <li class="border-b border-slate-100 pb-3 last:border-0 last:pb-0">
-                                    <a href="{{ route("informasi.{$section}.show", $r->slug) }}" class="font-medium hover:text-primary-700">{{ $r->title }}</a>
+                                    <a href="{{ route($showRoute, $r->slug) }}" class="font-medium hover:text-primary-700">{{ $r->title }}</a>
                                     <p class="text-xs text-muted">{{ $r->published_at?->translatedFormat('d M Y') }}</p>
                                 </li>
                             @endforeach

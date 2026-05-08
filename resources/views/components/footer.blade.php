@@ -86,7 +86,7 @@
             </div>
             <div class="flex md:justify-end items-center gap-2 flex-wrap">
                 <span class="chip bg-white/10 text-white">WBK</span>
-                <span class="chip bg-white/10 text-white">WBBM</span>
+                <span class="chip bg-white/10 text-white">Menuju WBBM</span>
                 <span class="chip bg-white/10 text-white">Zona Integritas</span>
             </div>
         </div>
