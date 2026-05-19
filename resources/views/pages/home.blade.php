@@ -27,12 +27,20 @@
     }" x-init="start()"
         @mouseenter="stop()" @mouseleave="start()" aria-label="Hero carousel">
 
-        {{-- Photo backgrounds, one per slide, with dark overlay for text contrast --}}
-        @php $heroPhotos = ['/photos/hero-1.png', '/photos/hero-2.jpg', '/photos/hero-3.jpg']; @endphp
-        @foreach ($slides as $i => $_slide)
+        {{-- Photo backgrounds, one per slide, with dark overlay for text contrast.
+             Prefer the CMS-managed background_path so admins can swap hero
+             images via Filament; fall back to bundled assets if a slide
+             has no path set. --}}
+        @php $heroFallback = ['/photos/hero-1.png', '/photos/hero-2.jpg', '/photos/hero-3.jpg']; @endphp
+        @foreach ($slides as $i => $slide)
+            @php
+                $bg = $slide->background_path
+                    ? asset('storage/'.$slide->background_path)
+                    : $heroFallback[$i % count($heroFallback)];
+            @endphp
             <div x-show="current === {{ $i }}" x-transition.opacity.duration.700ms
                 class="absolute inset-0 bg-cover bg-center"
-                style="background-image: url('{{ $heroPhotos[$i % count($heroPhotos)] }}');" aria-hidden="true"></div>
+                style="background-image: url('{{ $bg }}');" aria-hidden="true"></div>
         @endforeach
         {{-- Dark overlay so heading remains legible over any photo --}}
         <div class="absolute inset-0 bg-gradient-to-br from-primary-950/95 via-primary-900/85 to-primary-800/75"></div>

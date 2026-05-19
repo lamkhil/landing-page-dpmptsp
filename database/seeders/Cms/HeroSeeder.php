@@ -4,16 +4,24 @@ namespace Database\Seeders\Cms;
 
 use App\Domain\Hero\Models\HeroHighlight;
 use App\Domain\Hero\Models\HeroSection;
+use Database\Seeders\Cms\Support\RemoteImageDownloader;
 use Illuminate\Database\Seeder;
 
 /**
  * Seeds 3 hero slides for the homepage carousel — each highlights a
  * different angle (perizinan / investasi / komitmen integritas).
+ *
+ * Background images are sourced from the official site's carousel and
+ * cached locally on the `public` disk so we don't hot-link to the
+ * source on every page view.
  */
 class HeroSeeder extends Seeder
 {
     public function run(): void
     {
+        $this->command?->info('  ↻ downloading 3 hero carousel images (~3-5MB each, may resize)');
+        $downloader = new RemoteImageDownloader();
+
         $slides = [
             [
                 'title'    => 'Layanan Perizinan Modern, Transparan & Akuntabel',
@@ -25,6 +33,8 @@ class HeroSeeder extends Seeder
                 'secondary_cta_url'   => '/layanan/tracking',
                 'running_text'        => 'Mal Pelayanan Publik Lt.3, Jl. Tunjungan No. 1-3 Genteng, Surabaya · Senin–Jumat 08.00–16.00 WIB · Layanan online 24 jam',
                 'sort_order'          => 0,
+                'image_url'           => 'https://dpm-ptsp.surabaya.go.id/tentangfile/siola.jpeg',
+                'image_filename'      => 'hero-siola.jpeg',
             ],
             [
                 'title'    => 'Klinik Investasi · Konsultasi Perizinan di Kota Surabaya',
@@ -36,6 +46,8 @@ class HeroSeeder extends Seeder
                 'secondary_cta_url'   => '/profil/mengapa-surabaya',
                 'running_text'        => 'Surabaya — Kota Metropolitan ke-2 Indonesia · Bandara & Pelabuhan Internasional · Pendidikan & Kesehatan Bertaraf Internasional',
                 'sort_order'          => 1,
+                'image_url'           => 'https://dpm-ptsp.surabaya.go.id/tentangfile/siola.jpeg',
+                'image_filename'      => 'hero-siola.jpeg',
             ],
             [
                 'title'    => 'Komitmen WBK & WBBM — Pelayanan Publik Bersih, Bebas Pungli',
@@ -47,13 +59,22 @@ class HeroSeeder extends Seeder
                 'secondary_cta_url'   => '/profil/zona-integritas',
                 'running_text'        => 'Wilayah Bebas Korupsi · Wilayah Birokrasi Bersih Melayani · Reformasi Birokrasi Pemerintah Kota Surabaya',
                 'sort_order'          => 2,
+                'image_url'           => 'https://dpm-ptsp.surabaya.go.id/tentangfile/siola.jpeg',
+                'image_filename'      => 'hero-siola.jpeg',
             ],
         ];
 
         foreach ($slides as $slide) {
+            $bgPath = $downloader->fetch($slide['image_url'], 'hero', $slide['image_filename']);
+            unset($slide['image_url'], $slide['image_filename']);
+
             $hero = HeroSection::updateOrCreate(
                 ['title' => $slide['title']],
-                $slide + ['is_active' => true, 'published_at' => now()]
+                $slide + [
+                    'background_path' => $bgPath,
+                    'is_active'       => true,
+                    'published_at'    => now(),
+                ]
             );
 
             // Highlights only for the first slide (used in dedicated highlight section).

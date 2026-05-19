@@ -42,6 +42,65 @@ class ProfilController extends Controller
     public function wbkWbbm(): View       { return $this->render('WBK / WBBM', 'wbk-wbbm'); }
     public function mengapaSurabaya(): View { return $this->render('Mengapa Investasi di Surabaya', 'mengapa-surabaya'); }
 
+    /**
+     * Inovasi LIST page — single card grid with chip-style category filter
+     * at the top (Alpine.js client-side, no reload on filter switch).
+     * Separate from the SLUG_MAP profil pages because each innovation has
+     * its own detail page (see inovasiShow).
+     */
+    public function inovasi(): View
+    {
+        $items = Post::query()
+            ->ofType(Post::TYPE_INOVASI)
+            ->published()
+            ->with('category')
+            ->orderByDesc('is_featured')
+            ->orderByDesc('published_at')
+            ->get();
+
+        // Build the chip list from categories that actually have items, so
+        // we never render an empty filter that yields zero results.
+        $categories = $items
+            ->map(fn ($p) => $p->category)
+            ->filter()
+            ->unique('id')
+            ->sortBy('sort_order')
+            ->values();
+
+        return view('pages.profil.inovasi.index', [
+            'pageTitle'  => 'Inovasi DPMPTSP',
+            'seo'        => $this->seo->for('profil'),
+            'items'      => $items,
+            'categories' => $categories,
+        ]);
+    }
+
+    public function inovasiShow(string $slug): View
+    {
+        $post = Post::query()
+            ->ofType(Post::TYPE_INOVASI)
+            ->where('slug', $slug)
+            ->published()
+            ->with('category')
+            ->firstOrFail();
+
+        $related = Post::query()
+            ->ofType(Post::TYPE_INOVASI)
+            ->published()
+            ->where('id', '!=', $post->id)
+            ->when($post->category_id, fn ($q) => $q->where('category_id', $post->category_id))
+            ->orderByDesc('published_at')
+            ->limit(3)
+            ->get();
+
+        return view('pages.profil.inovasi.show', [
+            'pageTitle' => $post->title.' — Inovasi DPMPTSP',
+            'seo'       => $this->seo->for('profil'),
+            'post'      => $post,
+            'related'   => $related,
+        ]);
+    }
+
     public function faq(): View
     {
         return view('pages.profil.faq', [

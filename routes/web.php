@@ -34,6 +34,8 @@ Route::prefix('profil')->name('profil.')->group(function () {
     Route::get('zona-integritas',                    [ProfilController::class, 'zonaIntegritas'])->name('zi');
     Route::get('wbk-wbbm',                           [ProfilController::class, 'wbkWbbm'])->name('wbk');
     Route::get('mengapa-surabaya',                   [ProfilController::class, 'mengapaSurabaya'])->name('mengapa');
+    Route::get('inovasi',                            [ProfilController::class, 'inovasi'])->name('inovasi.index');
+    Route::get('inovasi/{slug}',                     [ProfilController::class, 'inovasiShow'])->name('inovasi.show');
     Route::get('faq',                                [ProfilController::class, 'faq'])->name('faq');
 });
 

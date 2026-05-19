@@ -18,7 +18,13 @@
     <div class="container-page py-14 grid gap-10 md:grid-cols-4">
         <div>
             <div class="flex items-center gap-3">
-                <span class="grid place-items-center w-10 h-10 rounded-xl bg-white text-primary-700 font-bold">DP</span>
+                <span class="grid place-items-center w-10 h-10 rounded-xl bg-white p-1">
+                    <img src="{{ asset('brand/dpmptsp-logo-96.png') }}"
+                         srcset="{{ asset('brand/dpmptsp-logo-96.png') }} 1x, {{ asset('brand/dpmptsp-logo-256.png') }} 2x"
+                         width="32" height="32"
+                         alt="Logo DPMPTSP Kota Surabaya"
+                         class="w-8 h-8 object-contain" />
+                </span>
                 <span class="font-display font-bold text-white leading-tight">DPMPTSP<br><span class="text-xs font-normal text-slate-300">Kota Surabaya</span></span>
             </div>
             <p class="mt-4 text-sm text-slate-300 leading-relaxed">

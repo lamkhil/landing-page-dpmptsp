@@ -4,18 +4,23 @@ namespace Database\Seeders\Cms;
 
 use App\Domain\Content\Models\Category;
 use App\Domain\Content\Models\Post;
+use Database\Seeders\Cms\Support\RemoteImageDownloader;
 use Illuminate\Database\Seeder;
 
 /**
  * Sample news entries — content adapted from public information at
- * dpm-ptsp.surabaya.go.id. These are clearly-marked placeholders so
- * admin can replace with real published articles.
+ * dpm-ptsp.surabaya.go.id. The first three items mirror the real headline
+ * news on the source site at seed time and download their actual cover
+ * images; the rest are evergreen articles with null cover_path that admin
+ * can replace via Filament Media Library.
  */
 class NewsSeeder extends Seeder
 {
     public function run(): void
     {
+        $this->command?->info('  ↻ downloading 3 news thumbnails');
         $author = \App\Models\User::query()->first();
+        $downloader = new RemoteImageDownloader();
 
         // Categories for berita
         Category::updateOrCreate(['type' => 'post', 'slug' => 'investasi'], ['name' => 'Investasi', 'sort_order' => 0]);
@@ -27,6 +32,45 @@ class NewsSeeder extends Seeder
         $catPengumuman = Category::where(['type' => 'post', 'slug' => 'pengumuman'])->first();
 
         $items = [
+            // ─── Headline news (mirror of source site at seed time) ─────
+            [
+                'type'    => Post::TYPE_NEWS,
+                'category'=> $catPelayanan,
+                'slug'    => 'kota-batam-pelajari-implementasi-pbg-di-surabaya',
+                'title'   => 'Kota Batam Pelajari Implementasi PBG di Surabaya untuk Tingkatkan Layanan Perizinan',
+                'excerpt' => 'DPMPTSP Kota Batam berkunjung ke Surabaya untuk mempelajari implementasi Persetujuan Bangunan Gedung (PBG).',
+                'body'    => '<p>DPMPTSP Kota Batam melakukan kunjungan ke DPM-PTSP Kota Surabaya untuk mempelajari implementasi <strong>Persetujuan Bangunan Gedung (PBG)</strong>. Studi tiru ini bertujuan meningkatkan kualitas layanan perizinan bangunan di wilayah Kota Batam, dengan mengadopsi praktik baik penyelenggaraan PBG di Surabaya.</p><p>Selain mempelajari alur teknis PBG, delegasi juga berdiskusi tentang sistem informasi pendukung dan strategi sosialisasi kepada pelaku usaha.</p>',
+                'featured'=> true,
+                'days_ago'=> 6,
+                'image_url' => 'https://dpm-ptsp.surabaya.go.id/fileberita/batam-pbg-mei-2026-2026-05-13(BERITA).jpeg',
+                'image_filename' => 'batam-pbg.jpg',
+            ],
+            [
+                'type'    => Post::TYPE_NEWS,
+                'category'=> $catPelayanan,
+                'slug'    => 'festival-rujak-uleg-2026-semarakkan-hjks-733',
+                'title'   => 'Festival Rujak Uleg 2026 Semarakkan HJKS ke-733, Ribuan Warga Padati SUBEC',
+                'excerpt' => 'Festival Rujak Uleg tahunan menyemarakkan Hari Jadi Kota Surabaya ke-733 di kawasan SUBEC.',
+                'body'    => '<p>Ribuan warga memadati kawasan <strong>Surabaya Convention & Exhibition Center (SUBEC)</strong> dalam Festival Rujak Uleg 2026, agenda tradisional yang menyemarakkan rangkaian peringatan <strong>Hari Jadi Kota Surabaya (HJKS) ke-733</strong>. Festival ini menjadi sarana promosi kuliner dan budaya khas Surabaya.</p>',
+                'featured'=> true,
+                'days_ago'=> 7,
+                'image_url' => 'https://dpm-ptsp.surabaya.go.id/fileberita/Hjks-rujag-uleg-2026-2026-05-12(BERITA).jpg',
+                'image_filename' => 'rujak-uleg.jpg',
+            ],
+            [
+                'type'    => Post::TYPE_NEWS,
+                'category'=> $catPelayanan,
+                'slug'    => 'studi-tiru-dpmptsp-gresik-pelaporan-lkpm',
+                'title'   => 'DPMPTSP Surabaya Terima Kunjungan Studi Tiru DPMPTSP Gresik Terkait Pelaporan LKPM',
+                'excerpt' => 'DPMPTSP Kabupaten Gresik berkunjung ke Surabaya untuk mempelajari optimalisasi pelaporan LKPM.',
+                'body'    => '<p>DPM-PTSP Kabupaten Gresik melakukan kunjungan studi tiru ke DPM-PTSP Kota Surabaya terkait <strong>optimalisasi pelaporan LKPM (Laporan Kegiatan Penanaman Modal)</strong>. Kunjungan ini berfokus pada strategi pendampingan pelaku usaha, monitoring kepatuhan pelaporan, dan integrasi sistem dengan OSS RBA.</p>',
+                'featured'=> false,
+                'days_ago'=> 11,
+                'image_url' => 'https://dpm-ptsp.surabaya.go.id/fileberita/dpmptspgresik-kunjungan-2026-2026-05-08(BERITA).jpeg',
+                'image_filename' => 'dpmptsp-gresik.jpg',
+            ],
+
+            // ─── Evergreen articles (no source-side thumbnail) ──────────
             [
                 'type'    => Post::TYPE_NEWS,
                 'category'=> $catInvestasi,
@@ -35,7 +79,7 @@ class NewsSeeder extends Seeder
                 'excerpt' => 'DPMPTSP Surabaya membuka layanan Klinik Investasi sebagai sarana konsultasi pra-perizinan dan pengembangan iklim investasi.',
                 'body'    => '<p>DPM-PTSP Kota Surabaya menyelenggarakan <strong>Klinik Investasi</strong> sebagai layanan konsultasi pra-perizinan dan informasi peluang investasi. Layanan ini dapat diakses tatap muka di <strong>Mal Pelayanan Publik Lt.3, Jl. Tunjungan No. 1-3 Genteng, Surabaya</strong>, maupun melalui kanal daring.</p><p>Topik konsultasi meliputi tata cara pengajuan NIB, persyaratan teknis sektor usaha, pelaporan LKPM, hingga peluang dan kemudahan investasi di Kota Surabaya.</p>',
                 'featured'=> true,
-                'days_ago'=> 7,
+                'days_ago'=> 25,
             ],
             [
                 'type'    => Post::TYPE_NEWS,
@@ -140,7 +184,12 @@ class NewsSeeder extends Seeder
             ],
         ];
 
-        foreach ($items as $i => $it) {
+        foreach ($items as $it) {
+            $cover = null;
+            if (! empty($it['image_url']) && ! empty($it['image_filename'])) {
+                $cover = $downloader->fetch($it['image_url'], 'news', $it['image_filename']);
+            }
+
             Post::updateOrCreate(
                 ['slug' => $it['slug']],
                 [
@@ -150,6 +199,7 @@ class NewsSeeder extends Seeder
                     'slug'         => $it['slug'],
                     'excerpt'      => $it['excerpt'],
                     'body'         => $it['body'],
+                    'cover_path'   => $cover,
                     'status'       => Post::STATUS_PUBLISHED,
                     'is_featured'  => $it['featured'],
                     'author_id'    => $author?->id,

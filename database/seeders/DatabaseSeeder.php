@@ -7,6 +7,7 @@ use Database\Seeders\Cms\ApplicationSeeder;
 use Database\Seeders\Cms\FaqSeeder;
 use Database\Seeders\Cms\FooterSeeder;
 use Database\Seeders\Cms\HeroSeeder;
+use Database\Seeders\Cms\InovasiSeeder;
 use Database\Seeders\Cms\MenuSeeder;
 use Database\Seeders\Cms\NewsSeeder;
 use Database\Seeders\Cms\ProfilContentSeeder;
@@ -35,6 +36,7 @@ class DatabaseSeeder extends Seeder
 
             // Content from official source (dpm-ptsp.surabaya.go.id)
             ProfilContentSeeder::class,
+            InovasiSeeder::class,
             ApplicationSeeder::class,
             StatisticSeeder::class,
             FaqSeeder::class,

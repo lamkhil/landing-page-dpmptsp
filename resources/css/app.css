@@ -41,6 +41,10 @@
 @layer base {
     html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
     body { @apply font-sans bg-surface text-ink antialiased; }
+    /* Hide Alpine-cloaked elements until Alpine has initialized — prevents the
+       mobile drawer (and other x-show elements) from flashing visible before
+       Alpine binds. Without this, x-show state can desync on first paint. */
+    [x-cloak] { display: none !important; }
     /*
      * Headings inherit color from parent — section yang gelap pakai text-white,
      * section terang inherit text-ink dari body. Hindari `text-ink` baseline di

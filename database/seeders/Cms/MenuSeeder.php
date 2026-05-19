@@ -35,6 +35,7 @@ class MenuSeeder extends Seeder
                 ['label' => 'Zona Integritas',      'route_name' => 'profil.zi'],
                 ['label' => 'WBK / WBBM',           'route_name' => 'profil.wbk'],
                 ['label' => 'Mengapa Surabaya',     'route_name' => 'profil.mengapa'],
+                ['label' => 'Inovasi',              'route_name' => 'profil.inovasi.index'],
                 ['label' => 'FAQ',                  'route_name' => 'profil.faq'],
             ],
             'layanan' => [
@@ -101,6 +102,17 @@ class MenuSeeder extends Seeder
                     ]
                 );
             }
+
+            // Drop orphan menu records that aren't in the current tree for this
+            // group — happens when a route gets renamed (e.g. profil.inovasi →
+            // profil.inovasi.index). Without this, the navbar shows both old
+            // and new entries; the old one's route doesn't resolve and renders
+            // as an unclickable "#" link.
+            $keepRoutes = array_column($items, 'route_name');
+            Menu::query()
+                ->where('group', $group)
+                ->whereNotIn('route_name', $keepRoutes)
+                ->delete();
         }
 
         // Make explicit the sections that purposely have no submenu.

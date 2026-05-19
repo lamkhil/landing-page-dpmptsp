@@ -30,6 +30,7 @@ class Post extends Model implements HasMedia
     public const TYPE_INFOGRAFIS   = 'infografis';
     public const TYPE_PROFIL       = 'profil';
     public const TYPE_ZI           = 'zi-content';
+    public const TYPE_INOVASI      = 'inovasi';
 
     public const STATUS_DRAFT     = 'draft';
     public const STATUS_PUBLISHED = 'published';

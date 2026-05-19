@@ -38,11 +38,15 @@
     }
 @endphp
 
-<header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-[0_1px_2px_rgb(15_23_42_/_0.04)]">
+<header x-data class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-[0_1px_2px_rgb(15_23_42_/_0.04)]">
     <nav class="container-page flex items-center justify-between gap-4 h-16" aria-label="Menu utama">
-        {{-- Brand --}}
+        {{-- Brand — logo resmi DPMPTSP Surabaya (sumber: dpm-ptsp.surabaya.go.id) --}}
         <a href="{{ route('home') }}" class="flex items-center gap-2.5 shrink-0">
-            <span class="grid place-items-center w-9 h-9 rounded-xl bg-primary-700 text-white font-bold text-sm">DP</span>
+            <img src="{{ asset('brand/dpmptsp-logo-96.png') }}"
+                 srcset="{{ asset('brand/dpmptsp-logo-96.png') }} 1x, {{ asset('brand/dpmptsp-logo-256.png') }} 2x"
+                 width="36" height="36"
+                 alt="Logo DPMPTSP Kota Surabaya"
+                 class="w-9 h-9 object-contain" />
             <span class="font-display font-bold text-primary-900 leading-tight hidden sm:block">
                 DPMPTSP<br><span class="text-[10px] font-medium text-muted tracking-wide">Kota Surabaya</span>
             </span>
@@ -107,10 +111,16 @@
         </button>
     </nav>
 
-    {{-- Mobile / tablet drawer (xl- breakpoint) --}}
-    <div x-data x-cloak x-show="$store.ui.drawer"
+    {{--
+        Mobile / tablet drawer — teleported to <body> so it escapes the
+        header's sticky+z-40 stacking context. Otherwise siblings of the
+        header (hero section, running-text marquee) with their own
+        positioning/opacity can paint over a z-50 drawer trapped inside z-40.
+    --}}
+    <template x-teleport="body">
+    <div x-cloak x-show="$store.ui.drawer"
          x-transition.opacity
-         class="fixed inset-0 z-50 xl:hidden"
+         class="fixed inset-0 z-[60] xl:hidden"
          role="dialog" aria-modal="true">
         <div class="absolute inset-0 bg-slate-900/60" @click="$store.ui.closeDrawer()"></div>
         <aside class="absolute right-0 top-0 h-full w-80 max-w-[85%] bg-white shadow-xl flex flex-col"
@@ -155,4 +165,5 @@
             </div>
         </aside>
     </div>
+    </template>
 </header>

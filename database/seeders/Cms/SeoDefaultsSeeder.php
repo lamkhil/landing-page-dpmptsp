@@ -3,12 +3,19 @@
 namespace Database\Seeders\Cms;
 
 use App\Domain\Seo\Models\SeoSetting;
+use Database\Seeders\Cms\Support\RemoteImageDownloader;
 use Illuminate\Database\Seeder;
 
 class SeoDefaultsSeeder extends Seeder
 {
     public function run(): void
     {
+        $this->command?->info('  ↻ downloading default OG image');
+        // Shared OG image — the official DPMPTSP Surabaya header logo.
+        // Pages without their own og_image_path inherit this one.
+        $ogImage = (new RemoteImageDownloader())
+            ->fetch('https://dpm-ptsp.surabaya.go.id/images/headerweb.png', 'seo', 'og-default.png');
+
         $orgJsonLd = [
             '@context' => 'https://schema.org',
             '@type'    => 'GovernmentOrganization',
@@ -52,7 +59,13 @@ class SeoDefaultsSeeder extends Seeder
         ];
 
         foreach ($defaults as $d) {
-            SeoSetting::updateOrCreate(['page_key' => $d['page_key']], $d + ['robots' => 'index,follow']);
+            SeoSetting::updateOrCreate(
+                ['page_key' => $d['page_key']],
+                $d + [
+                    'og_image_path' => $ogImage,
+                    'robots'        => 'index,follow',
+                ]
+            );
         }
     }
 }
