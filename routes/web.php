@@ -30,9 +30,13 @@ Route::prefix('profil')->name('profil.')->group(function () {
     Route::get('maklumat-pelayanan',                 [ProfilController::class, 'maklumat'])->name('maklumat');
     Route::get('sop-pelayanan',                      [ProfilController::class, 'sop'])->name('sop');
     Route::get('standar-pelayanan',                  [ProfilController::class, 'standar'])->name('standar');
+    Route::get('standar-pelayanan/{serviceStandard}', [ProfilController::class, 'standarDetail'])->name('standar.detail');
     Route::get('reformasi-birokrasi',                [ProfilController::class, 'reformasi'])->name('reformasi');
-    Route::get('zona-integritas',                    [ProfilController::class, 'zonaIntegritas'])->name('zi');
-    Route::get('wbk-wbbm',                           [ProfilController::class, 'wbkWbbm'])->name('wbk');
+    // Zona Integritas, WBK & WBBM dilebur jadi tab di halaman Reformasi Birokrasi.
+    // URL lama diarahkan permanen (301) ke tab terkait agar bookmark tetap valid.
+    Route::redirect('zona-integritas', '/profil/reformasi-birokrasi', 301)->name('zi');
+    Route::redirect('wbk-wbbm',        '/profil/reformasi-birokrasi#wbk', 301)->name('wbk');
+    Route::redirect('wbbm',            '/profil/reformasi-birokrasi#wbbm', 301)->name('wbbm');
     Route::get('mengapa-surabaya',                   [ProfilController::class, 'mengapaSurabaya'])->name('mengapa');
     Route::get('inovasi',                            [ProfilController::class, 'inovasi'])->name('inovasi.index');
     Route::get('inovasi/{slug}',                     [ProfilController::class, 'inovasiShow'])->name('inovasi.show');
@@ -43,8 +47,12 @@ Route::prefix('layanan')->name('layanan.')->group(function () {
     Route::get('/',                                  [LayananController::class, 'index'])->name('index');
     Route::get('perizinan-berusaha',                 [LayananController::class, 'perizinan'])->name('perizinan');
     Route::get('non-perizinan',                      [LayananController::class, 'nonPerizinan'])->name('non-perizinan');
+    Route::get('pelayanan-non-perizinan',            [LayananController::class, 'pelayananNonPerizinan'])->name('pelayanan-non-perizinan');
     Route::get('oss',                                [LayananController::class, 'oss'])->name('oss');
-    Route::get('tracking',                           [LayananController::class, 'tracking'])->name('tracking');
+    // Tracking diarahkan ke pelacakan SSW Alfa.
+    Route::redirect('tracking', 'https://sswalfa.surabaya.go.id/cek/lacak')->name('tracking');
+    // Kamus KBLI diarahkan ke kamus KBLI OSS (selalu terkini).
+    Route::redirect('kbli', 'https://oss.go.id/id/kbli')->name('kbli');
     Route::get('konsultasi-online',                  [LayananController::class, 'konsultasi'])->name('konsultasi');
     Route::get('antrian-online',                     [LayananController::class, 'antrian'])->name('antrian');
     Route::get('persyaratan',                        [LayananController::class, 'persyaratan'])->name('persyaratan');

@@ -38,7 +38,7 @@
     }
 @endphp
 
-<header x-data class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-[0_1px_2px_rgb(15_23_42_/_0.04)]">
+<header x-data class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-[0_1px_2px_rgb(15_23_42_/_0.04)]">
     <nav class="container-page flex items-center justify-between gap-4 h-16" aria-label="Menu utama">
         {{-- Brand — logo resmi DPMPTSP Surabaya (sumber: dpm-ptsp.surabaya.go.id) --}}
         <a href="{{ route('home') }}" class="flex items-center gap-2.5 shrink-0">
@@ -77,11 +77,29 @@
                              class="absolute left-0 top-full pt-2 w-64 z-50">
                             <div class="bg-white rounded-xl shadow-xl border border-slate-100 p-2 ring-1 ring-slate-200/50">
                                 @foreach ($submenu as $item)
-                                    <a href="{{ $resolveUrl($item) }}"
-                                       @if($item->open_in_new_tab) target="_blank" rel="noopener" @endif
-                                       class="block px-3 py-2 rounded-lg text-[13px] text-ink hover:bg-primary-50 hover:text-primary-700 transition">
-                                        {{ $item->label }}
-                                    </a>
+                                    @if ($item->children->isNotEmpty())
+                                        {{-- Nested group: label + indented children --}}
+                                        <a href="{{ $resolveUrl($item) }}"
+                                           @if($item->open_in_new_tab) target="_blank" rel="noopener" @endif
+                                           class="block px-3 pt-2 pb-1 text-[11px] font-bold uppercase tracking-wide text-primary-700 hover:text-primary-800 transition">
+                                            {{ $item->label }}
+                                        </a>
+                                        <div class="ml-3 mb-1 pl-2 border-l border-slate-100">
+                                            @foreach ($item->children as $child)
+                                                <a href="{{ $resolveUrl($child) }}"
+                                                   @if($child->open_in_new_tab) target="_blank" rel="noopener" @endif
+                                                   class="block px-3 py-2 rounded-lg text-[13px] text-ink hover:bg-primary-50 hover:text-primary-700 transition">
+                                                    {{ $child->label }}
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <a href="{{ $resolveUrl($item) }}"
+                                           @if($item->open_in_new_tab) target="_blank" rel="noopener" @endif
+                                           class="block px-3 py-2 rounded-lg text-[13px] text-ink hover:bg-primary-50 hover:text-primary-700 transition">
+                                            {{ $item->label }}
+                                        </a>
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
@@ -150,9 +168,22 @@
                         @if ($submenu->isNotEmpty())
                             <div x-show="open" x-collapse class="pl-3 pb-2">
                                 @foreach ($submenu as $item)
-                                    <a href="{{ $resolveUrl($item) }}"
-                                       @if($item->open_in_new_tab) target="_blank" rel="noopener" @endif
-                                       class="block px-3 py-2 rounded-lg text-sm text-muted hover:bg-primary-50 hover:text-primary-700">{{ $item->label }}</a>
+                                    @if ($item->children->isNotEmpty())
+                                        <a href="{{ $resolveUrl($item) }}"
+                                           @if($item->open_in_new_tab) target="_blank" rel="noopener" @endif
+                                           class="block px-3 py-2 rounded-lg text-sm font-semibold text-primary-700 hover:bg-primary-50">{{ $item->label }}</a>
+                                        <div class="ml-3 pl-2 border-l border-slate-100">
+                                            @foreach ($item->children as $child)
+                                                <a href="{{ $resolveUrl($child) }}"
+                                                   @if($child->open_in_new_tab) target="_blank" rel="noopener" @endif
+                                                   class="block px-3 py-2 rounded-lg text-sm text-muted hover:bg-primary-50 hover:text-primary-700">{{ $child->label }}</a>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <a href="{{ $resolveUrl($item) }}"
+                                           @if($item->open_in_new_tab) target="_blank" rel="noopener" @endif
+                                           class="block px-3 py-2 rounded-lg text-sm text-muted hover:bg-primary-50 hover:text-primary-700">{{ $item->label }}</a>
+                                    @endif
                                 @endforeach
                             </div>
                         @endif

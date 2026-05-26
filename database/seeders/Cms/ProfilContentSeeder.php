@@ -132,9 +132,12 @@ HTML,
             <li>Sub Bagian Perencanaan dan Evaluasi</li>
         </ul>
     </li>
-    <li><strong>Bidang Penanaman Modal</strong> — menangani promosi, kerja sama, pengembangan, pengendalian, dan pengawasan investasi di Kota Surabaya.</li>
+    <li><strong>Bidang Penanaman Modal</strong> — menangani promosi, kerja sama, pengembangan, pengendalian, dan pengawasan investasi di Kota Surabaya.
+        <ul>
+            <li>Pengelolaan Data dan Sistem Informasi — pengelolaan data investasi & perizinan, pengembangan dan integrasi sistem informasi (SSW Alfa, SIPINTAR).</li>
+        </ul>
+    </li>
     <li><strong>Bidang Pelayanan Perizinan</strong> — penerbitan izin berbasis risiko (OSS RBA), pengawasan penyelenggaraan perizinan, dan penanganan pengaduan perizinan.</li>
-    <li><strong>Bidang Pengelolaan Data dan Sistem Informasi</strong> — pengelolaan data investasi & perizinan, pengembangan dan integrasi sistem informasi (SSW Alfa, SIPINTAR).</li>
     <li><strong>Kelompok Jabatan Fungsional</strong></li>
 </ol>
 
@@ -337,30 +340,10 @@ HTML,
 HTML,
             ],
 
-            // ─────────────── WBK / WBBM ───────────────
-            [
-                'slug'  => 'wbk-wbbm',
-                'title' => 'WBK / WBBM',
-                'cover' => $img['motto'],
-                'excerpt' => 'Wilayah Bebas Korupsi (WBK) dan Wilayah Birokrasi Bersih Melayani (WBBM) — predikat lanjutan dari Zona Integritas.',
-                'body' => <<<'HTML'
-<h2>Wilayah Bebas Korupsi (WBK)</h2>
-<p>Predikat yang diberikan kepada unit kerja yang memenuhi sebagian besar komponen pengungkit Zona Integritas: manajemen perubahan, penataan tata laksana, penataan sistem manajemen SDM, penguatan pengawasan, dan penguatan akuntabilitas kinerja — serta menghasilkan kinerja terukur dalam pencegahan korupsi.</p>
-
-<h2>Wilayah Birokrasi Bersih Melayani (WBBM)</h2>
-<p>Predikat lanjutan dari WBK yang menambahkan komponen <strong>Peningkatan Kualitas Pelayanan Publik</strong> sebagai prasyarat utama. Unit yang berhasil meraih WBBM telah membuktikan bahwa pencegahan korupsi berdampak nyata pada kualitas pelayanan kepada masyarakat.</p>
-
-<h2>Komitmen DPMPTSP Surabaya</h2>
-<p>DPM-PTSP Kota Surabaya berkomitmen membangun zona pelayanan yang bersih dan melayani sesuai amanat <strong>Permenpan-RB Nomor 90 Tahun 2021</strong> tentang Pembangunan dan Evaluasi Zona Integritas Menuju Wilayah Bebas dari Korupsi dan Wilayah Birokrasi Bersih Melayani di Instansi Pemerintah.</p>
-
-<p>Pelaporan dugaan pelanggaran integritas dapat disampaikan melalui:</p>
-<ul>
-    <li><a href="/pengaduan/lapor">Form Pengaduan</a> di website ini.</li>
-    <li><strong>SP4N LAPOR!</strong> di <a href="https://www.lapor.go.id" target="_blank" rel="noopener">lapor.go.id</a>.</li>
-    <li><strong>Whistleblowing System</strong> Pemkot Surabaya untuk pelanggaran integritas.</li>
-</ul>
-HTML,
-            ],
+            // WBK & WBBM tidak lagi berupa Post. Kini berupa section "media
+            // dokumentasi (pelaksanaan & penilaian)" di halaman Reformasi Birokrasi
+            // — ProfilPoint group wbk/wbbm + lampiran Dokumen, dikelola via
+            // ReformasiResource. Lihat ProfilStructuredSeeder.
 
             // Note: Inovasi sekarang adalah halaman list + detail tersendiri
             // (lihat InovasiSeeder + ProfilController::inovasi/inovasiShow).
@@ -438,7 +421,7 @@ HTML,
 
             [
                 'slug'  => 'non-perizinan',
-                'title' => 'Layanan Non-Perizinan',
+                'title' => 'Perizinan Non-Berusaha',
                 'cover' => null,
                 'excerpt' => 'Layanan rekomendasi, surat keterangan, dan layanan administrasi penanaman modal di luar perizinan berusaha.',
                 'body' => <<<'HTML'
@@ -454,6 +437,29 @@ HTML,
 </ul>
 
 <p>Pengajuan dapat dilakukan tatap muka di MPP Siola atau melalui <a href="/kontak">kanal kontak</a>.</p>
+HTML,
+            ],
+
+            // ─────────────── PELAYANAN NON-PERIZINAN ───────────────
+            [
+                'slug'  => 'pelayanan-non-perizinan',
+                'title' => 'Pelayanan Non-Perizinan',
+                'cover' => null,
+                'excerpt' => 'Surat keterangan, rekomendasi, dan layanan administrasi di luar perizinan — daring melalui SSW Alfa.',
+                'body' => <<<'HTML'
+<p>Pelayanan non-perizinan mencakup penerbitan surat keterangan, rekomendasi, dan layanan administrasi yang bukan merupakan izin. Seluruhnya diajukan secara daring melalui <strong>SSW Alfa</strong> atau tatap muka di MPP Siola.</p>
+
+<h2>Contoh Layanan</h2>
+<ul>
+    <li>Surat Keterangan &amp; Surat Pengantar.</li>
+    <li>Surat Rekomendasi (penanaman modal / teknis).</li>
+    <li>Surat Keterangan Ahli Waris (SKAW).</li>
+    <li>Surat Keterangan Domisili lembaga/usaha.</li>
+    <li>Konfirmasi Status Pelaku Usaha.</li>
+    <li>Bukti Pelaporan LKPM.</li>
+</ul>
+
+<p>Akses: <a href="https://sswalfa.surabaya.go.id" target="_blank" rel="noopener">sswalfa.surabaya.go.id</a></p>
 HTML,
             ],
 

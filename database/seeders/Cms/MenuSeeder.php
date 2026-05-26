@@ -29,25 +29,29 @@ class MenuSeeder extends Seeder
                 ['label' => 'Struktur Organisasi',  'route_name' => 'profil.struktur'],
                 ['label' => 'Tugas & Fungsi',       'route_name' => 'profil.tugas-fungsi'],
                 ['label' => 'Maklumat Pelayanan',   'route_name' => 'profil.maklumat'],
-                ['label' => 'SOP Pelayanan',        'route_name' => 'profil.sop'],
-                ['label' => 'Standar Pelayanan',    'route_name' => 'profil.standar'],
-                ['label' => 'Reformasi Birokrasi',  'route_name' => 'profil.reformasi'],
-                ['label' => 'Zona Integritas',      'route_name' => 'profil.zi'],
-                ['label' => 'WBK / WBBM',           'route_name' => 'profil.wbk'],
-                ['label' => 'Mengapa Surabaya',     'route_name' => 'profil.mengapa'],
+                // Zona Integritas = induk (link ke halaman reformasi); Reformasi
+                // Birokrasi / WBK / WBBM jadi anak submenu (deep-link via hash).
+                ['label' => 'Zona Integritas', 'route_name' => 'profil.zi', 'external_url' => '/profil/reformasi-birokrasi', 'children' => [
+                    ['label' => 'Reformasi Birokrasi', 'route_name' => 'profil.reformasi'],
+                    ['label' => 'WBK',                 'route_name' => 'profil.wbk',  'external_url' => '/profil/reformasi-birokrasi#wbk'],
+                    ['label' => 'WBBM',                'route_name' => 'profil.wbbm', 'external_url' => '/profil/reformasi-birokrasi#wbbm'],
+                ]],
                 ['label' => 'Inovasi',              'route_name' => 'profil.inovasi.index'],
                 ['label' => 'FAQ',                  'route_name' => 'profil.faq'],
             ],
+            // Diselaraskan dengan pola DPMPTSP kota lain (Badung/Medan/Bandung).
+            // SOP & Standar Pelayanan dipindah dari menu Profil ke sini
+            // (route/halaman tetap profil.sop & profil.standar). Item lama yang
+            // tak dipakai (OSS/Konsultasi/Antrian/Formulir/SLA/Persyaratan/Alur)
+            // route-nya tetap ada, hanya tidak ditampilkan di menu.
             'layanan' => [
-                ['label' => 'Perizinan Berusaha',   'route_name' => 'layanan.perizinan'],
-                ['label' => 'Non Perizinan',        'route_name' => 'layanan.non-perizinan'],
-                ['label' => 'OSS RBA',              'route_name' => 'layanan.oss'],
-                ['label' => 'Tracking Perizinan',   'route_name' => 'layanan.tracking'],
-                ['label' => 'Konsultasi Online',    'route_name' => 'layanan.konsultasi'],
-                ['label' => 'Antrian Online',       'route_name' => 'layanan.antrian'],
-                ['label' => 'Persyaratan Perizinan','route_name' => 'layanan.persyaratan'],
-                ['label' => 'Download Formulir',    'route_name' => 'layanan.formulir'],
-                ['label' => 'SLA Pelayanan',        'route_name' => 'layanan.sla'],
+                ['label' => 'Perizinan Berusaha',     'route_name' => 'layanan.perizinan'],
+                ['label' => 'Perizinan Non-Berusaha', 'route_name' => 'layanan.non-perizinan'],
+                ['label' => 'Pelayanan Non-Perizinan','route_name' => 'layanan.pelayanan-non-perizinan'],
+                ['label' => 'Kamus KBLI',            'route_name' => 'layanan.kbli', 'external_url' => 'https://oss.go.id/id/kbli', 'new_tab' => true],
+                ['label' => 'SOP Pelayanan',        'route_name' => 'profil.sop'],
+                ['label' => 'Standar Pelayanan',    'route_name' => 'profil.standar'],
+                ['label' => 'Tracking Permohonan',  'route_name' => 'layanan.tracking', 'external_url' => 'https://sswalfa.surabaya.go.id/cek/lacak', 'new_tab' => true],
             ],
             'statistik' => [
                 ['label' => 'Dashboard Investasi',  'route_name' => 'statistik.investasi'],
@@ -92,23 +96,40 @@ class MenuSeeder extends Seeder
         }
 
         foreach ($tree as $group => $items) {
+            $keepRoutes = [];
             foreach ($items as $i => $item) {
-                Menu::updateOrCreate(
+                $parent = Menu::updateOrCreate(
                     ['group' => $group, 'route_name' => $item['route_name']],
                     [
-                        'label'      => $item['label'],
-                        'is_visible' => true,
-                        'sort_order' => $i,
+                        'label'           => $item['label'],
+                        'external_url'    => $item['external_url'] ?? null,
+                        'open_in_new_tab' => $item['new_tab'] ?? false,
+                        'parent_id'       => null,
+                        'is_visible'      => true,
+                        'sort_order'      => $i,
                     ]
                 );
+                $keepRoutes[] = $item['route_name'];
+
+                // Nested submenu items (one level), e.g. Profil → Zona Integritas.
+                foreach ($item['children'] ?? [] as $ci => $child) {
+                    Menu::updateOrCreate(
+                        ['group' => $group, 'route_name' => $child['route_name']],
+                        [
+                            'label'        => $child['label'],
+                            'external_url' => $child['external_url'] ?? null,
+                            'parent_id'    => $parent->id,
+                            'is_visible'   => true,
+                            'sort_order'   => $ci,
+                        ]
+                    );
+                    $keepRoutes[] = $child['route_name'];
+                }
             }
 
-            // Drop orphan menu records that aren't in the current tree for this
-            // group — happens when a route gets renamed (e.g. profil.inovasi →
-            // profil.inovasi.index). Without this, the navbar shows both old
-            // and new entries; the old one's route doesn't resolve and renders
-            // as an unclickable "#" link.
-            $keepRoutes = array_column($items, 'route_name');
+            // Drop orphan menu records (incl. nested children) that aren't in the
+            // current tree for this group — happens when a route gets renamed or
+            // removed. Without this, the navbar shows stale "#" links.
             Menu::query()
                 ->where('group', $group)
                 ->whereNotIn('route_name', $keepRoutes)

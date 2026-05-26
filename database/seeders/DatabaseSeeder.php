@@ -11,7 +11,10 @@ use Database\Seeders\Cms\InovasiSeeder;
 use Database\Seeders\Cms\MenuSeeder;
 use Database\Seeders\Cms\NewsSeeder;
 use Database\Seeders\Cms\ProfilContentSeeder;
+use Database\Seeders\Cms\ProfilStructuredSeeder;
 use Database\Seeders\Cms\RegulationSeeder;
+use Database\Seeders\Cms\ServiceStandardSeeder;
+use Database\Seeders\Cms\SopSeeder;
 use Database\Seeders\Cms\SeoDefaultsSeeder;
 use Database\Seeders\Cms\StatisticSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -43,6 +46,9 @@ class DatabaseSeeder extends Seeder
             NewsSeeder::class,
             AgendaSeeder::class,
             RegulationSeeder::class,
+            ProfilStructuredSeeder::class,
+            SopSeeder::class,
+            ServiceStandardSeeder::class,
         ]);
     }
 }

@@ -40,6 +40,7 @@ class MenuService
                 ->visible()
                 ->inGroup($group)
                 ->whereNull('parent_id')
+                ->with(['children' => fn ($q) => $q->where('is_visible', true)->orderBy('sort_order')])
                 ->orderBy('sort_order')
                 ->get(['id', 'group', 'label', 'route_name', 'external_url', 'icon', 'open_in_new_tab']);
         } catch (\Throwable $e) {
