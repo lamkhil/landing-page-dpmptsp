@@ -29,8 +29,8 @@ class MenusTable
                 SelectFilter::make('group')->options([
                     'beranda' => 'Beranda', 'profil' => 'Profil', 'layanan' => 'Layanan',
                     'aplikasi' => 'Aplikasi Publik', 'statistik' => 'Statistik',
-                    'informasi' => 'Informasi Publik', 'pengaduan' => 'Pengaduan',
-                    'kontak' => 'Kontak', 'footer' => 'Footer',
+                    'informasi' => 'Informasi Publik', 'dokumen' => 'Dokumen Publik',
+                    'pengaduan' => 'Pengaduan', 'kontak' => 'Kontak', 'footer' => 'Footer',
                 ]),
             ])
             ->recordActions([EditAction::make()])

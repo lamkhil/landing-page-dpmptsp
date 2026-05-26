@@ -19,16 +19,13 @@ class RolePermissionSeeder extends Seeder
     {
         app(PermissionRegistrar::class)->forgetCachedPermissions();
 
-        // Fast path: if Shield permissions already exist AND super_admin is
-        // already mapped to (roughly) all of them, the role↔permission graph
-        // is already in the desired state. Skip the (re-)sync work — it's
-        // the slowest step of the seeder (5 roles × ~150 perms = ~750 pivot
-        // writes, each a separate query in syncPermissions).
+        // NB: tidak ada fast-path skip. Setiap kali resource baru ditambah dan
+        // `shield:generate` dijalankan, permission baru harus disinkron ulang ke
+        // role. syncPermissions bersifat idempotent & cukup cepat (~1s), jadi
+        // aman dijalankan berulang. (Sebelumnya ada skip berbasis jumlah perm
+        // super_admin — keliru menganggap "selesai" padahal entity baru belum
+        // dipetakan ke editor/operator/viewer.)
         $permCount = Permission::query()->count();
-        if ($permCount >= 50 && Role::where('name', 'super_admin')->first()?->permissions()->count() >= $permCount - 5) {
-            $this->command?->info("  ✓ permissions already configured (skip) — {$permCount} perms");
-            return;
-        }
 
         // 1) Make sure Shield has generated the panel permissions.
         // if ($permCount < 50) {
@@ -63,7 +60,8 @@ class RolePermissionSeeder extends Seeder
         // 5) editor: full CRUD on content modules; no destructive actions.
         $this->command?->info('  ↻ syncing editor');
         $contentEntities = [
-            'HeroSection', 'Post', 'Application', 'ApplicationCategory',
+            'HeroSection', 'Post', 'News', 'Article', 'Announcement', 'Infographic',
+            'Application', 'ApplicationCategory',
             'Faq', 'Testimonial', 'StatisticCounter', 'FooterLink', 'SeoSetting', 'Menu',
         ];
         $editorActions = ['ViewAny', 'View', 'Create', 'Update', 'Delete', 'Replicate', 'Reorder'];
@@ -84,6 +82,10 @@ class RolePermissionSeeder extends Seeder
             Permission::query()->whereIn('name', [
                 'ViewAny:Complaint', 'View:Complaint', 'Update:Complaint',
                 'ViewAny:Post', 'View:Post',
+                'ViewAny:News', 'View:News',
+                'ViewAny:Article', 'View:Article',
+                'ViewAny:Announcement', 'View:Announcement',
+                'ViewAny:Infographic', 'View:Infographic',
                 'ViewAny:Application', 'View:Application',
             ])->get()
         );

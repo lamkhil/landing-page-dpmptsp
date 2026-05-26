@@ -70,3 +70,9 @@
     .heading-eyebrow { @apply text-xs font-semibold tracking-widest uppercase text-primary-700; }
     .skip-link { @apply sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:bg-primary-700 focus:text-white focus:px-3 focus:py-2 focus:rounded; }
 }
+
+@layer utilities {
+    /* Hide horizontal scrollbar on the news channel chip strip while keeping scroll. */
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+}

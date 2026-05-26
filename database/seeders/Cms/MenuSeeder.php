@@ -61,14 +61,18 @@ class MenuSeeder extends Seeder
                 ['label' => 'SLA Pelayanan',        'route_name' => 'statistik.sla'],
                 ['label' => 'Open Data Statistik',  'route_name' => 'statistik.open-data'],
             ],
+            // Informasi = konten editorial. Arsip dokumen dipisah ke grup
+            // 'dokumen' di bawah agar tampil sebagai menu top-level sendiri.
             'informasi' => [
                 ['label' => 'Berita',               'route_name' => 'informasi.berita.index'],
                 ['label' => 'Pengumuman',           'route_name' => 'informasi.pengumuman.index'],
                 ['label' => 'Agenda',               'route_name' => 'informasi.agenda.index'],
                 ['label' => 'Artikel',              'route_name' => 'informasi.artikel.index'],
-                ['label' => 'Regulasi',             'route_name' => 'informasi.regulasi.index'],
-                ['label' => 'Dokumen Publik',       'route_name' => 'informasi.dokumen.index'],
                 ['label' => 'Infografis',           'route_name' => 'informasi.infografis.index'],
+            ],
+            // Dokumen Publik = menu top-level baru (navbar key 'dokumen').
+            'dokumen' => [
+                ['label' => 'Regulasi',             'route_name' => 'informasi.regulasi.index'],
                 ['label' => 'LKjIP',                'route_name' => 'informasi.lkjip'],
                 ['label' => 'Renstra',              'route_name' => 'informasi.renstra'],
                 ['label' => 'Laporan Tahunan',      'route_name' => 'informasi.laporan-tahunan'],

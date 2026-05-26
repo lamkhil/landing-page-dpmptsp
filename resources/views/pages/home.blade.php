@@ -498,7 +498,7 @@
                         <article
                             class="bg-white rounded-xl border border-slate-100 overflow-hidden hover:shadow-md transition">
                             @if ($n->cover_path)
-                                <img src="{{ asset('storage/' . $n->cover_path) }}" alt=""
+                                <img src="{{ $n->cover_url }}" alt=""
                                     class="w-full h-36 object-cover" loading="lazy">
                             @else
                                 <div

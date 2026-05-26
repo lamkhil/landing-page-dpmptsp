@@ -51,7 +51,13 @@ class Post extends Model implements HasMedia
 
     public function getSlugOptions(): SlugOptions
     {
-        return SlugOptions::create()->generateSlugsFrom('title')->saveSlugsTo('slug');
+        // Slug dibuat dari judul saat create, namun TIDAK diregenerasi otomatis
+        // saat update — menjaga URL/SEO tetap stabil dan menghormati slug manual
+        // (mis. infografis dengan slug bersuffix agar tak bentrok dengan post lain).
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug')
+            ->doNotGenerateSlugsOnUpdate();
     }
 
     public function getActivitylogOptions(): LogOptions
@@ -59,6 +65,21 @@ class Post extends Model implements HasMedia
         return LogOptions::defaults()
             ->logOnly(['title', 'status', 'published_at', 'is_featured', 'category_id'])
             ->logOnlyDirty();
+    }
+
+    /**
+     * URL cover yang sudah ter-resolve: dukung path storage lokal maupun URL
+     * absolut (mis. gambar berita yang di-hotlink dari sumber resmi).
+     */
+    public function getCoverUrlAttribute(): ?string
+    {
+        if (! $this->cover_path) {
+            return null;
+        }
+
+        return str_starts_with($this->cover_path, 'http://') || str_starts_with($this->cover_path, 'https://')
+            ? $this->cover_path
+            : asset('storage/'.$this->cover_path);
     }
 
     public function category(): BelongsTo

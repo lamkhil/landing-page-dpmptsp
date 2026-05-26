@@ -31,15 +31,12 @@ class PostForm
                             Select::make('type')
                                 ->label('Tipe')
                                 ->required()
+                                // Berita, Pengumuman, Artikel & Infografis dikelola di resource sendiri.
                                 ->options([
-                                    Post::TYPE_NEWS         => 'Berita',
-                                    Post::TYPE_ANNOUNCEMENT => 'Pengumuman',
-                                    Post::TYPE_ARTICLE      => 'Artikel',
-                                    Post::TYPE_INFOGRAFIS   => 'Infografis',
                                     Post::TYPE_PROFIL       => 'Profil',
                                     Post::TYPE_ZI           => 'Zona Integritas',
                                 ])
-                                ->default(Post::TYPE_NEWS),
+                                ->default(Post::TYPE_PROFIL),
                             Select::make('category_id')
                                 ->label('Kategori')
                                 ->options(fn () => Category::query()->pluck('name', 'id'))

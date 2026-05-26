@@ -24,7 +24,9 @@ class PostResource extends Resource
 
     protected static string|\UnitEnum|null $navigationGroup = 'Informasi Publik';
 
-    protected static ?string $navigationLabel = 'Konten (Berita / Artikel)';
+    // Berita dipisah ke resource sendiri (NewsResource) untuk izin terpisah.
+    // Resource ini menangani konten lain: Pengumuman, Artikel, Infografis, dll.
+    protected static ?string $navigationLabel = 'Konten Lainnya';
 
     protected static ?int $navigationSort = 1;
 
@@ -60,6 +62,13 @@ class PostResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->withoutGlobalScopes([SoftDeletingScope::class]);
+        // Berita, Pengumuman, Artikel & Infografis ditangani resource sendiri
+        // — sembunyikan dari sini agar tidak dikelola ganda. Tersisa: Profil,
+        // Zona Integritas, Inovasi.
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([SoftDeletingScope::class])
+            ->whereNotIn('type', [
+                Post::TYPE_NEWS, Post::TYPE_ANNOUNCEMENT, Post::TYPE_ARTICLE, Post::TYPE_INFOGRAFIS,
+            ]);
     }
 }

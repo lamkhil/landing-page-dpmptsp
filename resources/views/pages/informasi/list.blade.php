@@ -28,7 +28,7 @@
                 @foreach ($paginator as $p)
                     <article class="card overflow-hidden hover:shadow-md transition">
                         @if ($p->cover_path)
-                            <img src="{{ asset('storage/'.$p->cover_path) }}" alt="" class="w-full h-40 object-cover" loading="lazy">
+                            <img src="{{ $p->cover_url }}" alt="" class="w-full h-40 object-cover" loading="lazy">
                         @else
                             <div class="w-full h-40 bg-gradient-to-br from-primary-50 to-primary-100"></div>
                         @endif

@@ -13,18 +13,25 @@
 
         <div class="grid lg:grid-cols-12 gap-10">
             <div class="lg:col-span-8">
-                <p class="heading-eyebrow">{{ ucfirst($section) }}</p>
+                <div class="flex items-center gap-2">
+                    <span class="heading-eyebrow">{{ ucfirst($section) }}</span>
+                    @if ($post->category?->name)
+                        <span class="chip">{{ $post->category->name }}</span>
+                    @endif
+                </div>
                 <h1 class="mt-2 text-3xl md:text-4xl font-bold text-primary-900 leading-tight">{{ $post->title }}</h1>
-                <p class="mt-3 text-sm text-muted flex items-center gap-3">
+                @php $readMinutes = max(1, (int) ceil(str_word_count(strip_tags($post->body ?? '')) / 200)); @endphp
+                <p class="mt-3 text-sm text-muted flex items-center gap-3 flex-wrap">
                     <span>📅 {{ $post->published_at?->translatedFormat('d F Y · H:i') }}</span>
                     @if ($post->author?->name)
                         <span>· ✍️ {{ $post->author->name }}</span>
                     @endif
                     <span>· 👁 {{ number_format($post->view_count) }}</span>
+                    <span>· ⏱ {{ $readMinutes }} menit baca</span>
                 </p>
 
                 @if ($post->cover_path)
-                    <img src="{{ asset('storage/'.$post->cover_path) }}" alt="" class="mt-6 w-full rounded-2xl border border-slate-100" loading="lazy">
+                    <img src="{{ $post->cover_url }}" alt="" class="mt-6 w-full rounded-2xl border border-slate-100" loading="lazy">
                 @endif
 
                 <div class="mt-8 prose prose-slate max-w-none prose-headings:font-display prose-headings:text-primary-900 prose-a:text-primary-700">

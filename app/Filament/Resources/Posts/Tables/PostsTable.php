@@ -38,10 +38,6 @@ class PostsTable
             ])
             ->filters([
                 SelectFilter::make('type')->options([
-                    Post::TYPE_NEWS         => 'Berita',
-                    Post::TYPE_ANNOUNCEMENT => 'Pengumuman',
-                    Post::TYPE_ARTICLE      => 'Artikel',
-                    Post::TYPE_INFOGRAFIS   => 'Infografis',
                     Post::TYPE_PROFIL       => 'Profil',
                     Post::TYPE_ZI           => 'Zona Integritas',
                 ]),

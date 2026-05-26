@@ -4,12 +4,13 @@ namespace Database\Seeders;
 
 use Database\Seeders\Cms\AgendaSeeder;
 use Database\Seeders\Cms\ApplicationSeeder;
+use Database\Seeders\Cms\BeritaImportSeeder;
 use Database\Seeders\Cms\FaqSeeder;
 use Database\Seeders\Cms\FooterSeeder;
 use Database\Seeders\Cms\HeroSeeder;
+use Database\Seeders\Cms\InfografisSeeder;
 use Database\Seeders\Cms\InovasiSeeder;
 use Database\Seeders\Cms\MenuSeeder;
-use Database\Seeders\Cms\NewsSeeder;
 use Database\Seeders\Cms\ProfilContentSeeder;
 use Database\Seeders\Cms\ProfilStructuredSeeder;
 use Database\Seeders\Cms\RegulationSeeder;
@@ -43,7 +44,10 @@ class DatabaseSeeder extends Seeder
             ApplicationSeeder::class,
             StatisticSeeder::class,
             FaqSeeder::class,
-            NewsSeeder::class,
+            // Arsip resmi DPM-PTSP Surabaya → berita + pengumuman + artikel,
+            // plus agenda untuk acara berjadwal (menggantikan data dummy).
+            BeritaImportSeeder::class,
+            InfografisSeeder::class,
             AgendaSeeder::class,
             RegulationSeeder::class,
             ProfilStructuredSeeder::class,

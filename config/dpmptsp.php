@@ -64,9 +64,11 @@ return [
         'informasi.pengumuman.index'    => 'Pengumuman',
         'informasi.agenda.index'        => 'Agenda',
         'informasi.artikel.index'       => 'Artikel',
+        'informasi.infografis.index'    => 'Infografis',
+
+        'informasi.dokumen-publik'      => 'Dokumen Publik (Hub)',
         'informasi.regulasi.index'      => 'Regulasi',
         'informasi.dokumen.index'       => 'Dokumen Publik',
-        'informasi.infografis.index'    => 'Infografis',
         'informasi.lkjip'               => 'LKjIP',
         'informasi.renstra'             => 'Renstra',
         'informasi.laporan-tahunan'     => 'Laporan Tahunan',

@@ -26,11 +26,12 @@ class MenuForm
                             'aplikasi'  => 'Aplikasi Publik',
                             'statistik' => 'Statistik',
                             'informasi' => 'Informasi Publik',
+                            'dokumen'   => 'Dokumen Publik',
                             'pengaduan' => 'Pengaduan',
                             'kontak'    => 'Kontak',
                             'footer'    => 'Footer',
                         ])
-                        ->helperText('Lokasi tampil menu — 8 grup mengikuti navbar tetap.'),
+                        ->helperText('Lokasi tampil menu — mengikuti grup navbar tetap.'),
                     Select::make('parent_id')
                         ->label('Parent (sub-menu)')
                         ->relationship('parent', 'label')

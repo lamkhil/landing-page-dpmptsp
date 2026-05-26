@@ -19,7 +19,7 @@
                 @forelse ($latestNews as $n)
                     <article class="card overflow-hidden">
                         @if ($n->cover_path)
-                            <img src="{{ asset('storage/'.$n->cover_path) }}" alt="" class="w-full h-40 object-cover" loading="lazy">
+                            <img src="{{ $n->cover_url }}" alt="" class="w-full h-40 object-cover" loading="lazy">
                         @else
                             <div class="w-full h-40 bg-gradient-to-br from-primary-50 to-primary-100"></div>
                         @endif

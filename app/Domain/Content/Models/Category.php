@@ -21,7 +21,12 @@ class Category extends Model
 
     public function getSlugOptions(): SlugOptions
     {
-        return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug');
+        // Jangan regenerasi slug saat update — jaga slug stabil & cegah drift
+        // duplikat (mis. investasi → investasi-1, -2, … pada reseed berulang).
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug')
+            ->doNotGenerateSlugsOnUpdate();
     }
 
     public function scopeOfType(Builder $q, string $type): Builder

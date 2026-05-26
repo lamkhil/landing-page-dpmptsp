@@ -28,7 +28,7 @@ class MenuService
             Cache::forget($this->key($group));
             return;
         }
-        foreach (['beranda', 'profil', 'layanan', 'aplikasi', 'statistik', 'informasi', 'pengaduan', 'kontak', 'footer'] as $g) {
+        foreach (['beranda', 'profil', 'layanan', 'aplikasi', 'statistik', 'informasi', 'dokumen', 'pengaduan', 'kontak', 'footer'] as $g) {
             Cache::forget($this->key($g));
         }
     }

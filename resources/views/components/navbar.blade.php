@@ -16,6 +16,7 @@
         ['key' => 'aplikasi',  'label' => 'Aplikasi',         'route' => 'aplikasi.index'],
         ['key' => 'statistik', 'label' => 'Statistik',        'route' => 'statistik.index'],
         ['key' => 'informasi', 'label' => 'Informasi',        'route' => 'informasi.index'],
+        ['key' => 'dokumen',   'label' => 'Dokumen Publik',   'route' => 'informasi.dokumen-publik'],
         ['key' => 'pengaduan', 'label' => 'Pengaduan',        'route' => 'pengaduan.index'],
         ['key' => 'kontak',    'label' => 'Kontak',           'route' => 'kontak.index'],
     ];
@@ -63,7 +64,7 @@
                         @mouseleave="open = false"
                     @endif>
                     <a href="{{ route($section['route']) }}"
-                       class="px-3 py-2 rounded-lg hover:bg-primary-50 hover:text-primary-700 transition inline-flex items-center gap-1 whitespace-nowrap">
+                       class="px-2.5 py-2 rounded-lg hover:bg-primary-50 hover:text-primary-700 transition inline-flex items-center gap-1 whitespace-nowrap">
                         {{ $section['label'] }}
                         @if ($submenu->isNotEmpty())
                             <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">

@@ -75,6 +75,12 @@ Route::prefix('statistik')->name('statistik.')->group(function () {
     Route::get('open-data',                          [StatistikController::class, 'openData'])->name('open-data');
 });
 
+/*
+ * Informasi = konten editorial (Berita, Pengumuman, Agenda, Artikel, Infografis).
+ * Dokumen Publik = arsip dokumen (Regulasi, LKjIP, Renstra, Laporan Tahunan,
+ * Download Center) — tampil sebagai menu top-level terpisah di navbar, namun
+ * URL-nya tetap di bawah prefix /informasi agar bookmark lama tetap valid.
+ */
 Route::prefix('informasi')->name('informasi.')->group(function () {
     Route::get('/',                                  [InformasiController::class, 'index'])->name('index');
     Route::get('berita',                             [InformasiController::class, 'beritaIndex'])->name('berita.index');
@@ -84,9 +90,13 @@ Route::prefix('informasi')->name('informasi.')->group(function () {
     Route::get('agenda',                             [InformasiController::class, 'agendaIndex'])->name('agenda.index');
     Route::get('artikel',                            [InformasiController::class, 'artikelIndex'])->name('artikel.index');
     Route::get('artikel/{slug}',                     [InformasiController::class, 'artikelShow'])->name('artikel.show');
+    Route::get('infografis',                         [InformasiController::class, 'infografisIndex'])->name('infografis.index');
+    Route::get('infografis/{slug}',                  [InformasiController::class, 'infografisShow'])->name('infografis.show');
+
+    // --- Dokumen Publik (hub + sub-arsip) ---
+    Route::get('dokumen-publik',                     [InformasiController::class, 'dokumenPublik'])->name('dokumen-publik');
     Route::get('regulasi',                           [InformasiController::class, 'regulasiIndex'])->name('regulasi.index');
     Route::get('dokumen',                            [InformasiController::class, 'dokumenIndex'])->name('dokumen.index');
-    Route::get('infografis',                         [InformasiController::class, 'infografisIndex'])->name('infografis.index');
     Route::get('lkjip',                              [InformasiController::class, 'lkjip'])->name('lkjip');
     Route::get('renstra',                            [InformasiController::class, 'renstra'])->name('renstra');
     Route::get('laporan-tahunan',                    [InformasiController::class, 'laporanTahunan'])->name('laporan-tahunan');
